@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics - SpendWise</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .container {
+            width: 84%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .total {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f9fafb;
+        }
+
+        .bar-container {
+            background: #e5e7eb;
+            height: 20px;
+            border-radius: 10px;
+            margin-top: 7px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            background: #2563eb;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h1>📊 SpendWise Analytics</h1>
+
+    <a href="/">Dashboard</a>
+
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Total Spending</h2>
+
+        <div class="total">
+            ₹<span th:text="${totalSpent}">0</span>
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Category-wise Spending</h2>
+
+        <br>
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Share</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="entry : ${categoryTotals}">
+
+                <td th:text="${entry.key}">Food</td>
+
+                <td>
+                    ₹<span th:text="${entry.value}">0</span>
+                </td>
+
+                <td>
+
+                    <div class="bar-container">
+
+                        <div class="bar"
+                             th:style="'width:' +
+                             (${totalSpent} > 0 ?
+                             (${entry.value} / ${totalSpent} * 100) : 0) +
+                             '%;'">
+                        </div>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <p th:if="${#maps.isEmpty(categoryTotals)}"
+           style="margin-top:20px;color:#6b7280;">
+            No expense data available yet.
+        </p>
+
+    </div>
+
+    <a class="back" href="/">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>
